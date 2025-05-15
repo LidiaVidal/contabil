@@ -23,7 +23,10 @@ class AccountingResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('description') // Adiciona o campo de descrição
+                ->label('Descrição')
+                ->nullable()
+                ->columnSpan('full'),
             ]);
     }
 
