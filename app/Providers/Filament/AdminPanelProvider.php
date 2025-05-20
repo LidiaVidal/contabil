@@ -25,17 +25,15 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->bootUsing(function (): void {
-                // Verifique os métodos `translateLabel` ou substitua por algo válido
-                // Se Field e Column são classes customizadas, verifique se o método é correto
-                // Senão, remova ou substitua com métodos adequados.
-                Field::configureUsing(function (Field $field): void {
-                    $field->label('Label traduzido'); // Corrigido: Exemplo de método válido
-                });
-                Column::configureUsing(function (Column $column): void {
-                    $column->label('Label traduzido'); // Corrigido: Exemplo de método válido
-                });
-            })
+        ->bootUsing(function (): void {
+            Field::configureUsing(function (Field $field): void {
+                $field->translateLabel();
+            });
+
+            Column::configureUsing(function (Column $column): void {
+                $column->translateLabel();
+            });
+        })
             ->default()
             ->id('admin')
             ->path('admin')

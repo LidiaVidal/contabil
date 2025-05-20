@@ -23,6 +23,15 @@ class AccountingResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('type')
+                ->label('Tipo')
+                ->required()
+                ->options([
+                    'receita' => 'Receita',
+                    'despesa' => 'Despesa',
+                    'ativo' => 'Ativo',
+                    'passivo' => 'Passivo',
+                ]),
                 Forms\Components\TextInput::make('description') // Adiciona o campo de descrição
                 ->label('Descrição')
                 ->nullable()

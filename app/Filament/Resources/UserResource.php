@@ -24,14 +24,26 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->required(),
+                    ->required()
+                    ->maxLength(255)
+                    ->alpha(),
                 Forms\Components\TextInput::make('email')
                     ->email()
-                    ->required(),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
+                    ->required()
+                    ->maxLength(255)
+                    ->unique(User::class, 'email', ignoreRecord: true),         
                 Forms\Components\TextInput::make('password')
                     ->password()
-                    ->required(),
+                    ->required(fn (string $operation): bool => $operation === 'create')
+                    ->maxLength(255)
+                    ->dehydrateStateUsing(fn (string $state): string => bcrypt($state))
+                    ->dehydrated(fn (?string $value): ?string => \Illuminate\Support\Facades\Hash::make($value)),
+                Forms\Components\TextInput::make('password_confirmation')
+                    ->label("Confirmação de Senha")
+                    ->password()
+                    ->maxLength(255)
+                    ->requiredWith('password')
+                    ->dehydrated(false),    
             ]);
     }
 
@@ -40,9 +52,11 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->dateTime()
                     ->sortable(),

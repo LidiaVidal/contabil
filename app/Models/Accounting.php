@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Accounting extends Model
 {
     protected $fillable = [
-        'description', // Adiciona description ao fillable
+        'description',
+        'type', // Adiciona description ao fillable
     ];
 }
