@@ -7,6 +7,7 @@ use App\Filament\Resources\AccountingResource\RelationManagers;
 use App\Models\Accounting;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -36,6 +37,19 @@ class AccountingResource extends Resource
                 ->label('Descrição')
                 ->nullable()
                 ->columnSpan('full'),
+                Forms\Components\TextInput::make('value')
+                ->label('Valor')
+                ->required() 
+                ->numeric(),
+    
+                Forms\Components\DatePicker::make('date')
+                ->label('Data')
+                ->required(),
+
+                Forms\Components\DatePicker::make('competence_month')
+                ->label('Mês Competência')
+                ->required()
+                ->dehydrateStateUsing(fn (?string $state): ?string => $state ? \Carbon\Carbon::parse($state)->startOfMonth()->toDateString() : null),
             ]);
     }
 
@@ -43,7 +57,27 @@ class AccountingResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('type')
+                ->label('Tipo')
+                ->sortable()
+                ->searchable(),
+                Tables\Columns\TextColumn::make('description')
+                ->label('Descrição')
+                ->sortable()
+                ->searchable(),
+                Tables\Columns\TextColumn::make('value')
+                ->label('Valor')
+                ->numeric()
+                ->searchable(),
+                Tables\Columns\TextColumn::make('date')
+                ->label('Data')
+                ->date('d-m-y') 
+                ->sortable(),
+                Tables\Columns\TextColumn::make('competence_month')
+                ->label('Mês Competência')
+                ->date('Y-m')
+                ->sortable(),
+
             ])
             ->filters([
                 //

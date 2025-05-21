@@ -8,6 +8,9 @@ class Accounting extends Model
 {
     protected $fillable = [
         'description',
-        'type', // Adiciona description ao fillable
+        'type',
+        'value',
+        'date',
+        'competence_month',
     ];
 }
