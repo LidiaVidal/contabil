@@ -24,6 +24,12 @@ class AccountingResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('company_id')
+                ->relationship('company', 'name') // Assumindo que existe um relacionamento 'company' no modelo Tax e a tabela companies tem um campo 'name'
+                ->required(),
+            Forms\Components\Select::make('user_id')
+                ->relationship('user', 'name') // Assumindo que existe um relacionamento 'user' no modelo Tax e a tabela users tem um campo 'name'
+                ->required(),
                 Forms\Components\Select::make('type')
                 ->label('Tipo')
                 ->required()
@@ -40,6 +46,7 @@ class AccountingResource extends Resource
                 Forms\Components\TextInput::make('value')
                 ->label('Valor')
                 ->required() 
+                ->prefix('R$')
                 ->numeric(),
     
                 Forms\Components\DatePicker::make('date')
@@ -57,6 +64,10 @@ class AccountingResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('company.name') // Mostra o nome da empresa relacionada
+                ->sortable(),    
+                Tables\Columns\TextColumn::make('user.name') // Mostra o nome do usuário relacionado
+                ->sortable(),    
                 Tables\Columns\TextColumn::make('type')
                 ->label('Tipo')
                 ->sortable()

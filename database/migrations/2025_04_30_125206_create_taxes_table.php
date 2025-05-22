@@ -13,7 +13,18 @@ return new class extends Migration
     {
         Schema::create('taxes', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('company_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
+            $table->string('type_tax');
+            $table->string('tax_name');
+            $table->decimal('value', 10, 2); 
+            $table->date('due_date');
+            $table->date('competence_month');
+            $table->string('status');
             $table->timestamps();
+
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

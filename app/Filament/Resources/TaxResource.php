@@ -23,7 +23,35 @@ class TaxResource extends Resource
     {
         return $form
             ->schema([
-                //
+            Forms\Components\Select::make('company_id')
+                ->relationship('company', 'name') // Assumindo que existe um relacionamento 'company' no modelo Tax e a tabela companies tem um campo 'name'
+                ->required(),
+            Forms\Components\Select::make('user_id')
+                ->relationship('user', 'name') // Assumindo que existe um relacionamento 'user' no modelo Tax e a tabela users tem um campo 'name'
+                ->required(),
+            Forms\Components\TextInput::make('type_tax')
+                ->required()
+                ->maxLength(255),
+            Forms\Components\TextInput::make('tax_name')
+                ->required()
+                ->maxLength(255),
+            Forms\Components\TextInput::make('value')
+                ->required()
+                ->numeric()
+                ->prefix('R$'),
+                Forms\Components\DatePicker::make('due_date')
+                ->required(),
+            Forms\Components\DatePicker::make('competence_month')
+                ->label('Mês Competência')
+                ->required()
+                ->dehydrateStateUsing(fn (?string $state): ?string => $state ? \Carbon\Carbon::parse($state)->startOfMonth()->toDateString() : null),
+            Forms\Components\Select::make('status')
+                ->options([
+                    'paid' => 'Pago',
+                    'pending' => 'Pendente',
+                    'overdue' => 'Atrasado',
+                ])
+                ->required(),
             ]);
     }
 
@@ -31,7 +59,39 @@ class TaxResource extends Resource
     {
         return $table
             ->columns([
-                //
+            Tables\Columns\TextColumn::make('company.name') // Mostra o nome da empresa relacionada
+                ->sortable(),    
+            Tables\Columns\TextColumn::make('user.name') // Mostra o nome do usuário relacionado
+                ->sortable(),    
+            Tables\Columns\TextColumn::make('type_tax')
+                ->searchable(),
+            Tables\Columns\TextColumn::make('tax_name')
+                ->searchable(),
+            Tables\Columns\TextColumn::make('value')
+                ->money() 
+                ->sortable(),
+            Tables\Columns\TextColumn::make('due_date')
+                ->date()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('competence_month')
+                ->label('Mês Competência')
+                ->date('Y-m')
+                ->sortable(),
+            Tables\Columns\TextColumn::make('status')
+                ->badge() // 
+                ->colors([
+                    'success' => 'paid',
+                    'warning' => 'pending',
+                    'danger' => 'overdue',
+                ]),
+            Tables\Columns\TextColumn::make('created_at')
+                ->dateTime()
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: true),
+            Tables\Columns\TextColumn::make('updated_at')
+                ->dateTime()
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //

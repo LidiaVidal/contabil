@@ -13,12 +13,17 @@ return new class extends Migration
     {
         Schema::create('accountings', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('company_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
             $table->text('description')->nullable();
             $table->string('type')->nullable();
             $table->decimal('value', 10, 2)->nullable();
             $table->date('date')->nullable()->after('value');
             $table->date('competence_month')->nullable()->after('date');
             $table->timestamps();
+
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

@@ -23,7 +23,39 @@ class FinancialResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Select::make('company_id')
+                ->relationship('company', 'name') // Assumindo que existe um relacionamento 'company' no modelo Tax e a tabela companies tem um campo 'name'
+                ->required(),
+                Forms\Components\Select::make('user_id')
+                ->relationship('user', 'name') // Assumindo que existe um relacionamento 'user' no modelo Tax e a tabela users tem um campo 'name'
+                ->required(),
+                Forms\Components\Select::make('type')
+                ->label('Tipo')
+                ->required()
+                ->options([
+                    'receita' => 'Receita',
+                    'despesa' => 'Despesa',
+                    'ativo' => 'Ativo',
+                    'passivo' => 'Passivo',
+                ]),
+                Forms\Components\TextInput::make('description') // Adiciona o campo de descrição
+                ->label('Descrição')
+                ->nullable()
+                ->columnSpan('full'),
+                Forms\Components\TextInput::make('value')
+                ->label('Valor')
+                ->required() 
+                ->prefix('R$')
+                ->numeric(),
+    
+                Forms\Components\DatePicker::make('date')
+                ->label('Data')
+                ->required(),
+
+                Forms\Components\DatePicker::make('competence_month')
+                ->label('Mês Competência')
+                ->required()
+                ->dehydrateStateUsing(fn (?string $state): ?string => $state ? \Carbon\Carbon::parse($state)->startOfMonth()->toDateString() : null),
             ]);
     }
 
@@ -31,7 +63,32 @@ class FinancialResource extends Resource
     {
         return $table
             ->columns([
-                //
+        
+                Tables\Columns\TextColumn::make('company.name') // Mostra o nome da empresa relacionada
+                ->sortable(),    
+            Tables\Columns\TextColumn::make('user.name') // Mostra o nome do usuário relacionado
+                ->sortable(),    
+                Tables\Columns\TextColumn::make('type')
+                ->label('Tipo')
+                ->sortable()
+                ->searchable(),
+                Tables\Columns\TextColumn::make('description')
+                ->label('Descrição')
+                ->sortable()
+                ->searchable(),
+                Tables\Columns\TextColumn::make('value')
+                ->label('Valor')
+                ->numeric()
+                ->searchable(),
+                Tables\Columns\TextColumn::make('date')
+                ->label('Data')
+                ->date('d-m-y') 
+                ->sortable(),
+                Tables\Columns\TextColumn::make('competence_month')
+                ->label('Mês Competência')
+                ->date('Y-m')
+                ->sortable(),
+
             ])
             ->filters([
                 //
