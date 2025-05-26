@@ -196,5 +196,10 @@
   "Enter your email and password below to log in": "Digite seu e-mail e senha abaixo para entrar",
   "Don't have an account?": "Não tem uma conta?",
   "name": "Nome",
-  "password" : "Senha"
+  "password" : "Senha",
+  "Accounting": "Contabil",
+  "Accountings": "Contabilidades",
+  "Taxes": "Fiscal",
+  "Users": "Usuário",
+  "Financials": "Financeiro"
 }
