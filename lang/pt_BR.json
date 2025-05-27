@@ -200,6 +200,14 @@
   "Accounting": "Contabil",
   "Accountings": "Contabilidades",
   "Taxes": "Fiscal",
-  "Users": "Usuário",
-  "Financials": "Financeiro"
+  "Users": "Usuários",
+  "Financials": "Financeiro",
+  "Address": "Endereço",
+  "Companies": "Empresa",
+  "Company": "Empresa",
+  "User": "Usuário",
+  "Type tax": "Tipo de imposto",
+  "Tax name": "Nome do imposto",
+  "Due date": "Vencimento",
+  "value": "Valor"
 }
