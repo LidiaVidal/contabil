@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Company;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -14,6 +15,8 @@ class UserFactory extends Factory
     /**
      * The current password being used by the factory.
      */
+    protected $model = User::class;
+
     protected static ?string $password;
 
     /**
@@ -24,6 +27,7 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
+            'company_id' => Company::factory(),
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
@@ -41,4 +45,5 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+
 }

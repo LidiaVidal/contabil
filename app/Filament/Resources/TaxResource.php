@@ -19,6 +19,20 @@ class TaxResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationLabel = 'Fiscal';
+
+    #[\Override]
+    public static function getModelLabel(): string
+    {
+        return __('Fiscal');
+    }
+
+    public static function getPluralLabel(): string {
+
+        return 'Registros Fiscais';
+        
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -37,8 +51,7 @@ class TaxResource extends Resource
                 ->maxLength(255),
             Forms\Components\TextInput::make('value')
                 ->required()
-                ->numeric()
-                ->prefix('R$'),
+                ->numeric(),
                 Forms\Components\DatePicker::make('due_date')
                 ->required(),
             Forms\Components\DatePicker::make('competence_month')

@@ -19,6 +19,21 @@ class CompanyResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationLabel = 'Compania';
+
+    public static function getModelLabel(): string
+    {
+        return __('Compania');
+    }
+
+    public static function getPluralLabel(): string {
+
+        return 'Companias';
+        
+    }
+
+   
+
     public static function form(Form $form): Form
     {
         return $form
@@ -27,16 +42,24 @@ class CompanyResource extends Resource
                 ->required()
                 ->maxLength(255),
                 Forms\Components\TextInput::make('address')
-                ->required()
-                ->maxLength(255),
+                        ->label('Endereço')
+                        ->required(),
                 Forms\Components\TextInput::make('cnpj')
                 ->label('CNPJ')
                 ->required()
-                ->maxLength(255),
+                ->rules([ 'numeric',
+                'digits:14', 
+                'unique:companies,cnpj'])
+                ->validationMessages([ 
+                    'digits' => 'O campo cnpj deve ter exatamente 14 dígitos.', // Mensagem para a regra digits
+                    'numeric' => 'Por favor, insira apenas números no campo :attribute.', // Mensagem para a regra numeric (opcional, se quiser sobrescrever a do arquivo de tradução)
+                    'unique' => 'Este cnpj já está cadastrado.', // Mensagem para a regra unique (se quiser sobrescrever a do arquivo de tradução)
+                ]),
                 Forms\Components\TextInput::make('social')
                 ->label('Rede social')
                 ->required()
-                ->maxLength(255),
+                ->maxLength(255)
+                ->prefix('@'),
             ]);
     }
 
@@ -52,12 +75,28 @@ class CompanyResource extends Resource
                 ->label('CNPJ')
                 ->searchable()
                 ->sortable(),
-                Tables\Columns\TextColumn::make('address') // Exemplo: coluna 'name' para o nome da empresa
+                
+            Tables\Columns\TextColumn::make('address')
+                ->label('Endereço')
                 ->searchable()
-                ->sortable(),
-                Tables\Columns\TextColumn::make('social') // Exemplo: coluna 'name' para o nome da empresa
+                ->sortable(),    
+            Tables\Columns\TextColumn::make('social')
+                ->label('Rede social')
                 ->searchable()
-                ->sortable(),        
+                ->sortable()
+                ->prefix('@'),
+            ])
+        ->filters([
+            //
+        ])
+        ->actions([
+            Tables\Actions\EditAction::make(),
+        ])
+        ->bulkActions([
+            Tables\Actions\BulkActionGroup::make([
+                Tables\Actions\DeleteBulkAction::make(),
+            ]),
+      
             ])
             ->filters([
                 //

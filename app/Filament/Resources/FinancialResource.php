@@ -19,6 +19,18 @@ class FinancialResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationLabel = 'Financeiro';
+
+    public static function getModelLabel(): string
+    {
+        return __('Financeiro');
+    }
+
+    public static function getPluralLabel(): string {
+
+        return 'Registros financeiros';
+        
+    }
     public static function form(Form $form): Form
     {
         return $form

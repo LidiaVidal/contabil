@@ -20,15 +20,28 @@ class AccountingResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationLabel = 'Contábil';
+
+    public static function getModelLabel(): string
+    {
+        return __('Contabil');
+    }
+
+    public static function getPluralLabel(): string {
+
+        return 'Registros contábeis';
+        
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Select::make('company_id')
-                ->relationship('company', 'name') // Assumindo que existe um relacionamento 'company' no modelo Tax e a tabela companies tem um campo 'name'
+                ->relationship('company', 'name') 
                 ->required(),
             Forms\Components\Select::make('user_id')
-                ->relationship('user', 'name') // Assumindo que existe um relacionamento 'user' no modelo Tax e a tabela users tem um campo 'name'
+                ->relationship('user', 'name') 
                 ->required(),
                 Forms\Components\Select::make('type')
                 ->label('Tipo')

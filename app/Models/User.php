@@ -33,10 +33,8 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
+
+     /* @return array<string, string>
      */
     protected function casts(): array
     {
@@ -44,5 +42,25 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(\App\Models\Company::class);
+    }
+
+    public function tax()
+    {
+        return $this->hasMany(Tax::class);
+    }
+
+    public function accounting()
+    {
+        return $this->hasMany(Accounting::class);
+    }
+
+    public function financial()
+    {
+        return $this->hasMany(Financial::class);
     }
 }
